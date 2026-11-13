@@ -1,0 +1,5 @@
+# SolarityOnboarding guides.yml
+# Guides are easiest to make in game: stand where it should go and run
+#   /onboard npc create welcome onboarding
+# The plugin writes this file whenever a guide changes. Run /onboard reload after editing by hand.
+guides: {}

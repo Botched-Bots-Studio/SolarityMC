@@ -1,0 +1,17 @@
+name: SolarityOnboarding
+version: '${project.version}'
+main: fun.solaritymc.solarityonboarding.SolarityOnboarding
+api-version: '26.3'
+folia-supported: true
+description: New player onboarding and guide NPCs for Solarity's GenSMP.
+authors: [SolarityMC]
+website: https://github.com/SolarityMC
+softdepend: [SolarityGens, LandClaim]
+
+permissions:
+  solarityonboarding.start:
+    description: Use /onboard start to onboard without a guide NPC (when allowed in config).
+    default: true
+  solarityonboarding.admin:
+    description: Manage guide NPCs, reset and wipe onboarding, reload.
+    default: op

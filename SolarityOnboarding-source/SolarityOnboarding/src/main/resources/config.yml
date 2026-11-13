@@ -1,0 +1,123 @@
+# SolarityOnboarding config.yml
+# Text uses MiniMessage (<gold>, <bold>, <#ffaa00> ...). Legacy &-codes also work in a line that
+# has no MiniMessage tags. Placeholders: %player% (name), %uuid%, %guide% (the guide's name).
+# /onboard reload applies changes.
+
+onboarding:
+  # Turn the whole onboarding flow off (guide NPCs with the info role keep working).
+  enabled: true
+
+  # What the onboarding guide says before it hands out the claim. Keep it to 1-2 short lines.
+  # A guide with its own `lines` in guides.yml uses those instead.
+  intro-lines:
+    - "<white>Welcome to <gold>Solarity</gold>. Here's your own claim and a gen that works for you."
+    - "<white>Collect it, sell it, upgrade it. <red>Outside your claim, PvP is on.</red>"
+
+  # Said once onboarding has finished (after the teleport to the new claim).
+  after-lines:
+    - "<white>This is your claim. <yellow>Place your gens</yellow> and right-click them to collect. <gray>/gens home</gray> brings you back."
+
+  # Said when someone who has already onboarded clicks an onboarding guide.
+  returning-lines:
+    - "<white>Use <yellow>/gens</yellow> to unlock new gens and <gray>/gens home</gray> to get back to your claim."
+
+  # Run when the intro lines finish. This is what actually hands out the claim and gens.
+  #   [player] <command>   run as the player (no slash)
+  #   [console] <command>  run from the console
+  #   [message] <text>     send the player a message
+  #   [sound] <key> [volume] [pitch]
+  start-actions:
+    - "[player] gens start"
+
+  # Run once, after onboarding is confirmed. Good for a starter kit or a crate key.
+  reward-actions: []
+  #  - "[console] crates key give %player% starter 1"
+
+  verify:
+    # landclaim: only mark a player as onboarded once LandClaim says they own a claim.
+    # none: mark them as onboarded as soon as start-actions have run.
+    # If LandClaim 26.11.0+ isn't installed, `landclaim` acts like `none` (with a warning on startup).
+    mode: landclaim
+    # How long to wait for the claim to show up before calling it a failure.
+    timeout-seconds: 15
+
+  # A player who already owns a LandClaim claim (e.g. from before this plugin) counts as onboarded
+  # the first time they join or click a guide. Their claim and gens are not touched.
+  existing-claim-counts: true
+
+  # /onboard start lets a player onboard without walking to a guide.
+  # never: disabled. no-guide: only while no onboarding guide exists. always: always allowed.
+  start-command: no-guide
+
+  # Only used while no onboarding guide exists: onboard new players by themselves on first join.
+  without-guide:
+    auto-on-first-join: false
+    delay-seconds: 3
+
+dialogue:
+  # chat: lines go to chat as "<name> » <line>". title: the line is shown as a subtitle under the
+  # guide's name (and also sent to chat so it can be read again).
+  style: chat
+  format: "%guide% <dark_gray>»</dark_gray> %line%"
+  # Who is speaking when onboarding runs without a guide (/onboard start or on first join).
+  default-name: "<gold><bold>Guide</bold></gold>"
+  # Ticks between lines (20 ticks = 1 second).
+  line-delay-ticks: 50
+  # Sound on each line. Leave empty for none.
+  sound: "minecraft:entity.villager.ambient"
+  sound-volume: 0.8
+  sound-pitch: 1.2
+  # Clicks closer together than this are ignored.
+  click-cooldown-ms: 750
+
+# Shown only to players who haven't onboarded yet, for onboarding guides with `guidance: true`.
+guidance:
+  arrow:
+    enabled: true
+    # Floating text above the guide's head. One entry per line.
+    text:
+      - "<gold><bold>▼</bold></gold>"
+    height: 2.55
+    scale: 2.0
+    # How far the arrow moves up and down, in blocks, and how long one bob takes, in ticks.
+    bob-distance: 0.25
+    bob-ticks: 20
+  trail:
+    enabled: true
+    # Any Bukkit particle name. Particles that need extra data (DUST, BLOCK ...) aren't supported here.
+    particle: END_ROD
+    # How far ahead of the player the trail is drawn, and the gap between particles.
+    length: 9.0
+    spacing: 0.7
+    # Stop drawing the trail when the player is closer than this to the guide.
+    min-distance: 4.0
+    # Don't guide players further away than this (same world only).
+    max-distance: 200.0
+  beacon:
+    # A ring of particles around the guide's feet.
+    enabled: true
+    particle: HAPPY_VILLAGER
+    radius: 0.8
+    points: 10
+  action-bar:
+    enabled: true
+    text: "<yellow>Talk to %guide% <dark_gray>» <white>%distance%m"
+    # Shown instead once the player is standing next to the guide.
+    near-text: "<yellow>Right-click %guide%"
+  # How often the guidance updates, in ticks.
+  period-ticks: 5
+
+npc:
+  # Turn guides to face the nearest player within this many blocks. 0 turns it off.
+  look-distance: 8.0
+  # How often guides look around, in ticks.
+  look-period-ticks: 4
+  # How often missing guide NPCs are put back, in seconds.
+  check-seconds: 5
+
+skins:
+  # Optional. Without a key MineSkin still works but is rate limited (about 10 skins a minute).
+  # Get one at https://account.mineskin.org
+  mineskin-api-key: ""
+  # Shown as the User-Agent to MineSkin.
+  user-agent: "SolarityOnboarding/26.11.0"
